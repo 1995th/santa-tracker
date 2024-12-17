@@ -9,7 +9,7 @@ interface MapProps {
   santaLocation?: [number, number];
 }
 
-const Map: React.FC<MapProps> = ({ santaLocation }) => {
+const Map: React.FC<MapProps> = ({ santaLocation = [0, 90] }) => {
   const { mapContainer, map, error } = useMapInitialization();
   useSantaMarker(map.current, santaLocation);
 

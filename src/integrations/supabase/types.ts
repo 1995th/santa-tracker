@@ -9,7 +9,71 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      journey_status: {
+        Row: {
+          created_at: string | null
+          current_location_id: string | null
+          end_time: string
+          id: string
+          is_active: boolean | null
+          start_time: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_location_id?: string | null
+          end_time: string
+          id?: string
+          is_active?: boolean | null
+          start_time: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_location_id?: string | null
+          end_time?: string
+          id?: string
+          is_active?: boolean | null
+          start_time?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_status_current_location_id_fkey"
+            columns: ["current_location_id"]
+            isOneToOne: false
+            referencedRelation: "santa_journey"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      santa_journey: {
+        Row: {
+          arrival_time: string
+          created_at: string | null
+          id: string
+          latitude: number
+          location_name: string
+          longitude: number
+        }
+        Insert: {
+          arrival_time: string
+          created_at?: string | null
+          id?: string
+          latitude: number
+          location_name: string
+          longitude: number
+        }
+        Update: {
+          arrival_time?: string
+          created_at?: string | null
+          id?: string
+          latitude?: number
+          location_name?: string
+          longitude?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

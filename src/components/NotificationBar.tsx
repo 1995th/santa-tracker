@@ -24,7 +24,7 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
             </div>
           ) : (
             <div className="text-sm sm:text-base">
-              {currentLocation ? `Santa is currently in ${currentLocation}!` : 'Santa is on his way!'}
+              {currentLocation ? `Santa is currently in ${currentLocation}!` : 'Preparing for takeoff from the North Pole...'}
             </div>
           )}
         </div>

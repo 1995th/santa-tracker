@@ -7,20 +7,30 @@ export function ShareButton({ location }: { location?: string }) {
     const shareText = location
       ? `🎅 Santa is currently in ${location}! Track Santa's journey live!`
       : "🎅 Track Santa's journey live!";
+    const shareUrl = window.location.href;
 
-    if (navigator.share) {
-      try {
+    try {
+      // Check if the Web Share API is supported
+      if (navigator.share) {
         await navigator.share({
           title: "Santa Tracker",
           text: shareText,
-          url: window.location.href,
+          url: shareUrl,
         });
-      } catch (err) {
-        console.error("Error sharing:", err);
+        toast.success("Thanks for sharing!");
+      } else {
+        // Fallback to clipboard copy for browsers that don't support Web Share API
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        toast.success("Link copied to clipboard! Share it with your friends!");
       }
-    } else {
-      await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
-      toast.success("Link copied to clipboard!");
+    } catch (err) {
+      // Handle user cancellation or other errors gracefully
+      if (err instanceof Error && err.name === "AbortError") {
+        // User cancelled the share operation
+        return;
+      }
+      console.error("Error sharing:", err);
+      toast.error("Oops! Something went wrong while sharing.");
     }
   };
 

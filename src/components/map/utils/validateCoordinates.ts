@@ -4,6 +4,8 @@ export function isValidCoordinate(lng: number, lat: number): boolean {
     typeof lat === 'number' &&
     !isNaN(lng) &&
     !isNaN(lat) &&
+    isFinite(lng) &&
+    isFinite(lat) &&
     lng >= -180 &&
     lng <= 180 &&
     lat >= -90 &&

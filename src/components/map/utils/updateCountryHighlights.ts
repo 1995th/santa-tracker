@@ -7,8 +7,19 @@ export function updateCountryHighlights(
   visitedLocations: [number, number][]
 ) {
   try {
+    // Validate current location coordinates
+    if (!isValidCoordinate(santaLocation[0], santaLocation[1])) {
+      console.warn('Invalid santa location coordinates:', santaLocation);
+      return;
+    }
+
     // Get current country
     const point = map.project(santaLocation);
+    if (!point || isNaN(point.x) || isNaN(point.y)) {
+      console.warn('Invalid projected point:', point);
+      return;
+    }
+
     const features = map.queryRenderedFeatures(point, {
       layers: ['country-visited']
     });
@@ -19,7 +30,12 @@ export function updateCountryHighlights(
     const visitedCountryCodes = visitedLocations
       .filter(loc => isValidCoordinate(loc[0], loc[1]))
       .map(loc => {
-        const features = map.queryRenderedFeatures(map.project(loc), {
+        const projectedPoint = map.project(loc);
+        if (!projectedPoint || isNaN(projectedPoint.x) || isNaN(projectedPoint.y)) {
+          console.warn('Invalid projected point for visited location:', loc);
+          return '';
+        }
+        const features = map.queryRenderedFeatures(projectedPoint, {
           layers: ['country-visited']
         });
         return features[0]?.properties?.iso_3166_1_alpha_3 || '';
@@ -38,33 +54,40 @@ export function updateCountryHighlights(
 
     // Add the trail source and layer
     if (visitedLocations.length > 0) {
-      map.addSource(sourceId, {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: [...visitedLocations, santaLocation]
-          }
-        }
-      });
+      // Validate all coordinates before creating the trail
+      const validCoordinates = [...visitedLocations, santaLocation].filter(
+        coord => isValidCoordinate(coord[0], coord[1])
+      );
 
-      map.addLayer({
-        id: layerId,
-        type: 'line',
-        source: sourceId,
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#ffffff',
-          'line-width': 2,
-          'line-opacity': 0.7,
-          'line-dasharray': [2, 1]
-        }
-      });
+      if (validCoordinates.length > 0) {
+        map.addSource(sourceId, {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: validCoordinates
+            }
+          }
+        });
+
+        map.addLayer({
+          id: layerId,
+          type: 'line',
+          source: sourceId,
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#ffffff',
+            'line-width': 2,
+            'line-opacity': 0.7,
+            'line-dasharray': [2, 1]
+          }
+        });
+      }
     }
 
     // Set filters for both layers

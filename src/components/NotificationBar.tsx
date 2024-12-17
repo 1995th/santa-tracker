@@ -11,13 +11,13 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
   const isMobile = useIsMobile();
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-santa-red text-white py-2 sm:py-3 px-2 sm:px-4 z-50">
-      <div className="container mx-auto">
+    <div className="fixed top-4 left-4 z-50">
+      <div className="bg-santa-red text-white py-2 px-4 rounded-full shadow-lg">
         <div className="text-center font-medium tracking-wide">
           {!isLive ? (
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-              <span className="text-xs sm:text-base">Santa takes off in:</span>
-              <div className="flex space-x-2 sm:space-x-3">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
+              <span className="text-xs sm:text-sm whitespace-nowrap">Santa takes off in:</span>
+              <div className="flex space-x-2">
                 {[
                   { value: days, label: 'd' },
                   { value: hours, label: 'h' },
@@ -25,14 +25,14 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
                   { value: seconds, label: 's' }
                 ].map((item, index) => (
                   <div key={index} className="flex items-center">
-                    <span className="text-lg sm:text-2xl font-bold">{item.value}</span>
-                    <span className="text-xs sm:text-sm ml-1">{item.label}</span>
+                    <span className="text-sm sm:text-base font-bold">{item.value}</span>
+                    <span className="text-xs ml-0.5">{item.label}</span>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="text-xs sm:text-base animate-pulse">
+            <div className="text-xs sm:text-sm whitespace-nowrap animate-pulse">
               {currentLocation ? `Santa is currently in ${currentLocation}!` : 'Preparing for takeoff from the North Pole...'}
             </div>
           )}

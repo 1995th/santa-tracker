@@ -81,6 +81,9 @@ export const useMapInitialization = () => {
           },
           filter: ['==', 'iso_3166_1_alpha_3', '']
         });
+
+        // Trigger initial country highlights update
+        map.current.fire('idle');
       });
 
       setupGlobeRotation(map.current);

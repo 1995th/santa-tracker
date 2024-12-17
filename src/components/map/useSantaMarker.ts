@@ -38,6 +38,8 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       markerRef.current = new mapboxgl.Marker({
         element: el,
         anchor: 'center',
+        rotationAlignment: 'viewport', // Makes marker always face the camera
+        pitchAlignment: 'viewport',    // Keeps marker upright regardless of map pitch
       })
         .setLngLat(santaLocation)
         .addTo(map);

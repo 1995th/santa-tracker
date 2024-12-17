@@ -16,14 +16,21 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
             <div className="flex items-center justify-center space-x-4">
               <span className="text-sm sm:text-base">Santa takes off in:</span>
               <div className="flex space-x-2 sm:space-x-3">
-                <span className="text-sm sm:text-base">{days}d</span>
-                <span className="text-sm sm:text-base">{hours}h</span>
-                <span className="text-sm sm:text-base">{minutes}m</span>
-                <span className="text-sm sm:text-base">{seconds}s</span>
+                {[
+                  { value: days, label: 'd' },
+                  { value: hours, label: 'h' },
+                  { value: minutes, label: 'm' },
+                  { value: seconds, label: 's' }
+                ].map((item, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <span className="text-2xl font-bold animate-bounce">{item.value}</span>
+                    <span className="text-xs">{item.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
           ) : (
-            <div className="text-sm sm:text-base">
+            <div className="text-sm sm:text-base animate-pulse">
               {currentLocation ? `Santa is currently in ${currentLocation}!` : 'Preparing for takeoff from the North Pole...'}
             </div>
           )}

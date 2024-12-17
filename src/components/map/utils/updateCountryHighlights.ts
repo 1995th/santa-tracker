@@ -26,6 +26,47 @@ export function updateCountryHighlights(
       })
       .filter(Boolean);
 
+    // Draw Santa's trail
+    const sourceId = 'santa-trail';
+    const layerId = 'santa-trail-layer';
+
+    // Remove existing trail if it exists
+    if (map.getSource(sourceId)) {
+      map.removeLayer(layerId);
+      map.removeSource(sourceId);
+    }
+
+    // Add the trail source and layer
+    if (visitedLocations.length > 0) {
+      map.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: [...visitedLocations, santaLocation]
+          }
+        }
+      });
+
+      map.addLayer({
+        id: layerId,
+        type: 'line',
+        source: sourceId,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#ffffff',
+          'line-width': 2,
+          'line-opacity': 0.7,
+          'line-dasharray': [2, 1]
+        }
+      });
+    }
+
     // Set filters for both layers
     map.setFilter('country-visited', ['in', 'iso_3166_1_alpha_3', ...visitedCountryCodes]);
     map.setFilter('country-current', ['==', 'iso_3166_1_alpha_3', currentCountryCode]);

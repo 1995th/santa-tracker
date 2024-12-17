@@ -17,6 +17,9 @@ export type Database = {
           id: string
           is_active: boolean | null
           start_time: string
+          total_cookies_eaten: number | null
+          total_distance_traveled: number | null
+          total_presents_delivered: number | null
           updated_at: string | null
         }
         Insert: {
@@ -26,6 +29,9 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           start_time: string
+          total_cookies_eaten?: number | null
+          total_distance_traveled?: number | null
+          total_presents_delivered?: number | null
           updated_at?: string | null
         }
         Update: {
@@ -35,6 +41,9 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           start_time?: string
+          total_cookies_eaten?: number | null
+          total_distance_traveled?: number | null
+          total_presents_delivered?: number | null
           updated_at?: string | null
         }
         Relationships: [
@@ -50,27 +59,42 @@ export type Database = {
       santa_journey: {
         Row: {
           arrival_time: string
+          cookies_eaten: number | null
           created_at: string | null
+          distance_to_next: number | null
+          fun_fact: string | null
           id: string
           latitude: number
           location_name: string
           longitude: number
+          presents_delivered: number | null
+          weather_data: Json | null
         }
         Insert: {
           arrival_time: string
+          cookies_eaten?: number | null
           created_at?: string | null
+          distance_to_next?: number | null
+          fun_fact?: string | null
           id?: string
           latitude: number
           location_name: string
           longitude: number
+          presents_delivered?: number | null
+          weather_data?: Json | null
         }
         Update: {
           arrival_time?: string
+          cookies_eaten?: number | null
           created_at?: string | null
+          distance_to_next?: number | null
+          fun_fact?: string | null
           id?: string
           latitude?: number
           location_name?: string
           longitude?: number
+          presents_delivered?: number | null
+          weather_data?: Json | null
         }
         Relationships: []
       }

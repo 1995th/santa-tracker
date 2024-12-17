@@ -18,7 +18,7 @@ const Map: React.FC<MapProps> = ({ santaLocation }) => {
   }
 
   return (
-    <div className="fixed inset-0 w-full h-full">
+    <div className="fixed inset-0 flex items-center justify-center w-full h-full">
       <div ref={mapContainer} className="w-full h-full" />
       <SnowOverlay />
     </div>

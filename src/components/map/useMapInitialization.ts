@@ -24,8 +24,8 @@ export const useMapInitialization = () => {
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/dark-v11',
         projection: 'globe',
-        zoom: 1.5,
-        center: [0, 20],
+        zoom: 3,
+        center: [-90, 90], // North Pole coordinates
         pitch: 45,
         failIfMajorPerformanceCaveat: false,
       });

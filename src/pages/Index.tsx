@@ -5,9 +5,12 @@ import { useCountdown } from '@/hooks/useCountdown';
 
 const SANTA_START_DATE = new Date('2024-12-24T00:00:00');
 const SANTA_END_DATE = new Date('2024-12-25T00:00:00');
+const NORTH_POLE: [number, number] = [-90, 90];
 
 // Simulated Santa route - in production this would come from a backend
 const getSantaLocation = (progress: number): [number, number] => {
+  if (progress <= 0) return NORTH_POLE;
+  
   // Simple circular route around the globe
   const longitude = -180 + (360 * progress);
   const latitude = 20 * Math.sin(progress * Math.PI * 2);
@@ -15,6 +18,8 @@ const getSantaLocation = (progress: number): [number, number] => {
 };
 
 const getLocationName = (progress: number): string => {
+  if (progress <= 0) return "North Pole";
+  
   // This would be replaced with actual location data in production
   const locations = [
     "North Pole", "Tokyo", "Sydney", "Delhi", "Dubai",
@@ -26,13 +31,13 @@ const getLocationName = (progress: number): string => {
 
 const Index = () => {
   const { isLive } = useCountdown(SANTA_START_DATE);
-  const [santaLocation, setSantaLocation] = useState<[number, number] | undefined>();
-  const [currentLocation, setCurrentLocation] = useState<string>();
+  const [santaLocation, setSantaLocation] = useState<[number, number]>(NORTH_POLE);
+  const [currentLocation, setCurrentLocation] = useState<string>("North Pole");
 
   useEffect(() => {
     if (!isLive) {
-      setSantaLocation(undefined);
-      setCurrentLocation(undefined);
+      setSantaLocation(NORTH_POLE);
+      setCurrentLocation("North Pole");
       return;
     }
 

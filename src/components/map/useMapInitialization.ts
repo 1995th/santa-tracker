@@ -28,8 +28,6 @@ export const useMapInitialization = () => {
         center: [-90, 90], // North Pole coordinates
         pitch: 45,
         failIfMajorPerformanceCaveat: false,
-        maxZoom: 5, // Limit zoom to keep labels visible
-        minZoom: 2, // Set minimum zoom to ensure labels are readable
       });
 
       map.current.addControl(
@@ -79,28 +77,6 @@ export const useMapInitialization = () => {
             'fill-opacity': 0.5
           },
           filter: ['==', 'iso_3166_1_alpha_3', '']
-        });
-
-        // Add country labels that are always visible
-        map.current.addLayer({
-          id: 'country-labels',
-          type: 'symbol',
-          source: 'country-boundaries',
-          'source-layer': 'country_boundaries',
-          layout: {
-            'text-field': ['get', 'name_en'],
-            'text-variable-anchor': ['center'],
-            'text-justify': 'center',
-            'text-size': 12,
-            'text-allow-overlap': true,
-            'text-ignore-placement': true,
-            'symbol-z-order': 'source'
-          },
-          paint: {
-            'text-color': '#ffffff',
-            'text-halo-color': '#000000',
-            'text-halo-width': 1
-          }
         });
       });
 

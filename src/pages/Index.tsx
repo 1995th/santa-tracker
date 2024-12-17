@@ -5,28 +5,20 @@ import { useCountdown } from '@/hooks/useCountdown';
 
 const SANTA_START_DATE = new Date('2024-12-24T00:00:00');
 const SANTA_END_DATE = new Date('2024-12-25T00:00:00');
-const NORTH_POLE: [number, number] = [0, 90]; // Corrected North Pole coordinates
+const NORTH_POLE: [number, number] = [-90, 90];
 
+// Simulated Santa route - in production this would come from a backend
 const getSantaLocation = (progress: number): [number, number] => {
-  // Return North Pole for invalid progress
-  if (progress <= 0 || progress >= 1 || isNaN(progress)) {
-    return NORTH_POLE;
-  }
+  if (progress <= 0) return NORTH_POLE;
   
-  // Calculate longitude (-180 to 180 range)
-  let longitude = -180 + (360 * progress);
-  // Ensure longitude stays within valid range
-  longitude = ((longitude + 180) % 360) - 180;
-  
-  // Calculate latitude (0 to 90 range for northern hemisphere)
-  const latitudeProgress = Math.abs(Math.sin(progress * Math.PI * 2));
-  const latitude = 45 + (45 * latitudeProgress); // Keep Santa in northern hemisphere between 45°N and 90°N
-  
+  // Simple circular route around the globe
+  const longitude = -180 + (360 * progress);
+  const latitude = 20 * Math.sin(progress * Math.PI * 2);
   return [longitude, latitude];
 };
 
 const getLocationName = (progress: number): string => {
-  if (progress <= 0 || isNaN(progress)) return "North Pole";
+  if (progress <= 0) return "North Pole";
   
   // This would be replaced with actual location data in production
   const locations = [

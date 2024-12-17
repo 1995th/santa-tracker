@@ -12,18 +12,9 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       const el = document.createElement('div');
       el.className = 'santa-marker';
       el.innerHTML = '🎅';
-      el.style.fontSize = '3rem';
-      el.style.cursor = 'default';
-      el.style.filter = 'drop-shadow(2px 2px 2px rgba(0,0,0,0.5))';
-      el.style.zIndex = '1000';
-      el.style.position = 'relative';
+      el.style.fontSize = '2rem';
 
-      markerRef.current = new mapboxgl.Marker({
-        element: el,
-        anchor: 'center',
-        rotationAlignment: 'map', // Keeps marker oriented with the map
-        pitchAlignment: 'map'     // Keeps marker flat against the map
-      })
+      markerRef.current = new mapboxgl.Marker(el)
         .setLngLat(santaLocation)
         .addTo(map);
     } else {

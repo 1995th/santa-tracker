@@ -62,7 +62,8 @@ export const useMapInitialization = () => {
           'source-layer': 'country_boundaries',
           paint: {
             'fill-color': '#22c55e',
-            'fill-opacity': 0.5
+            'fill-opacity': 0.7,
+            'fill-outline-color': '#22c55e'
           },
           filter: ['==', 'iso_3166_1_alpha_3', '']
         });
@@ -75,7 +76,8 @@ export const useMapInitialization = () => {
           'source-layer': 'country_boundaries',
           paint: {
             'fill-color': '#ea384c',
-            'fill-opacity': 0.5
+            'fill-opacity': 0.7,
+            'fill-outline-color': '#ea384c'
           },
           filter: ['==', 'iso_3166_1_alpha_3', '']
         });

@@ -7,21 +7,24 @@ const SANTA_START_DATE = new Date('2024-12-24T00:00:00');
 const SANTA_END_DATE = new Date('2024-12-25T00:00:00');
 const NORTH_POLE: [number, number] = [-90, 90];
 
-// Simulated Santa route - in production this would come from a backend
 const getSantaLocation = (progress: number): [number, number] => {
-  // Always return North Pole if progress is 0 or invalid
-  if (progress <= 0 || isNaN(progress)) return NORTH_POLE;
-  if (progress >= 1) return NORTH_POLE; // Return to North Pole when done
+  // Return North Pole for invalid progress
+  if (progress <= 0 || progress >= 1 || isNaN(progress)) {
+    return NORTH_POLE;
+  }
   
-  // Simple circular route around the globe
-  const longitude = -180 + (360 * progress);
-  // Ensure latitude stays within valid range (-90 to 90)
-  const latitude = Math.min(Math.max(-90, 20 * Math.sin(progress * Math.PI * 2)), 90);
+  // Calculate longitude (-180 to 180 range)
+  let longitude = -180 + (360 * progress);
+  // Ensure longitude stays within valid range
+  longitude = ((longitude + 180) % 360) - 180;
   
-  // Ensure both values are valid numbers
-  if (isNaN(longitude) || isNaN(latitude)) return NORTH_POLE;
+  // Calculate latitude (-90 to 90 range)
+  const latitudeProgress = Math.sin(progress * Math.PI * 2);
+  const latitude = 20 * latitudeProgress;
+  // Ensure latitude stays within valid range
+  const clampedLatitude = Math.max(Math.min(latitude, 90), -90);
   
-  return [longitude, latitude];
+  return [longitude, clampedLatitude];
 };
 
 const getLocationName = (progress: number): string => {

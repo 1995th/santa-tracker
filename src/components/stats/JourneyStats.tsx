@@ -53,7 +53,7 @@ const JourneyStats = () => {
           <HoverCardTrigger>
             <div className="flex items-center gap-2 text-sm sm:text-base">
               <Gift className="w-4 h-4" />
-              <span>{stats?.total_presents_delivered?.toLocaleString() || 0} Presents</span>
+              <span>{(stats?.total_presents_delivered?.toLocaleString() || 0)} Presents Delivered</span>
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-64 sm:w-80">
@@ -65,7 +65,7 @@ const JourneyStats = () => {
           <HoverCardTrigger>
             <div className="flex items-center gap-2 text-sm sm:text-base">
               <Cookie className="w-4 h-4" />
-              <span>{stats?.total_cookies_eaten?.toLocaleString() || 0} Cookies</span>
+              <span>{(stats?.total_cookies_eaten?.toLocaleString() || 0)} Cookies Eaten</span>
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-64 sm:w-80">
@@ -77,7 +77,7 @@ const JourneyStats = () => {
           <HoverCardTrigger>
             <div className="flex items-center gap-2 text-sm sm:text-base">
               <Route className="w-4 h-4" />
-              <span>{Math.round(stats?.total_distance_traveled || 0).toLocaleString()} km</span>
+              <span>{Math.round(stats?.total_distance_traveled || 0).toLocaleString()} km Distance Travelled</span>
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-64 sm:w-80">

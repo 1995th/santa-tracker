@@ -40,10 +40,43 @@ export const useMapInitialization = () => {
       map.current.scrollZoom.disable();
 
       map.current.on('style.load', () => {
-        map.current?.setFog({
+        if (!map.current) return;
+
+        map.current.setFog({
           color: 'rgb(5, 5, 8)',
           'high-color': 'rgb(20, 20, 25)',
           'horizon-blend': 0.2,
+        });
+
+        // Add country boundaries source and layer
+        map.current.addSource('country-boundaries', {
+          type: 'vector',
+          url: 'mapbox://mapbox.country-boundaries-v1'
+        });
+
+        // Add a background fill layer
+        map.current.addLayer({
+          id: 'country-fills',
+          type: 'fill',
+          source: 'country-boundaries',
+          'source-layer': 'country_boundaries',
+          paint: {
+            'fill-color': 'transparent',
+            'fill-opacity': 0.7
+          }
+        });
+
+        // Add highlighted country layer
+        map.current.addLayer({
+          id: 'country-highlighted',
+          type: 'fill',
+          source: 'country-boundaries',
+          'source-layer': 'country_boundaries',
+          paint: {
+            'fill-color': '#ea384c',
+            'fill-opacity': 0.5
+          },
+          filter: ['==', 'iso_3166_1_alpha_3', '']
         });
       });
 

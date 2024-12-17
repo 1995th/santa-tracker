@@ -8,13 +8,14 @@ import { useIsMobile } from '@/hooks/use-mobile';
 export const useSantaMarker = (
   map: mapboxgl.Map | null,
   santaLocation?: [number, number],
-  visitedLocations: [number, number][] = []
+  visitedLocations: [number, number][] = [],
+  isMapLoaded: boolean = false
 ) => {
   const markerRef = useRef<mapboxgl.Marker | null>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!map || !santaLocation || !map.loaded()) return;
+    if (!map || !santaLocation || !isMapLoaded) return;
 
     // Validate coordinates
     const [lng, lat] = santaLocation;
@@ -56,7 +57,7 @@ export const useSantaMarker = (
         duration: 2000,
       });
     }
-  }, [map, santaLocation, visitedLocations, isMobile]);
+  }, [map, santaLocation, visitedLocations, isMobile, isMapLoaded]);
 
   return markerRef;
 };

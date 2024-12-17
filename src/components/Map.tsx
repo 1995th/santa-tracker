@@ -12,11 +12,7 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ santaLocation = [0, 90], visitedLocations = [] }) => {
   const { mapContainer, map, error, isLoaded } = useMapInitialization();
-  
-  // Only initialize Santa marker when map is loaded
-  if (isLoaded) {
-    useSantaMarker(map.current, santaLocation, visitedLocations);
-  }
+  useSantaMarker(map.current, santaLocation, visitedLocations, isLoaded);
 
   if (error) {
     return <MapError message={error} />;

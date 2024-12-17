@@ -1,69 +1,61 @@
-# Welcome to your Lovable project
+# Santa Tracker Overview
 
-## Project info
+This is a real-time Santa tracking application that shows Santa's journey on Christmas Eve (December 24, 2024). It features an interactive 3D globe using Mapbox, with live updates of Santa's location and journey statistics.
 
-**URL**: https://lovable.dev/projects/c70bf8ee-a187-4c8b-856f-f7c87614c98a
+## Key Components:
 
-## How can I edit this code?
+### Interactive Map (Map.tsx)
 
-There are several ways of editing your application.
+- Displays a 3D globe with Santa's current position
+- Shows visited locations in green
+- Current location highlighted in red
+- Includes a legend explaining the markers
+- Features a snow overlay effect
+  
+### Notification Bar (NotificationBar.tsx)
 
-**Use Lovable**
+- Shows countdown until Santa's journey begins
+- Displays current location once journey is active
+- Styled as a pill-shaped container in the top-left corner
+- Journey Stats (JourneyStats.tsx)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c70bf8ee-a187-4c8b-856f-f7c87614c98a) and start prompting.
+### Real-time statistics including:
 
-Changes made via Lovable will be committed automatically to this repo.
+- Presents delivered
+- Cookies eaten
+- Distance traveled
+- Updates automatically using Supabase real-time subscriptions
 
-**Use your preferred IDE**
+## Database Structure (Supabase):
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### santa_journey table:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Location name, coordinates (latitude/longitude)
+- Arrival time
+- Presents delivered at each stop
+- Cookies eaten
+- Local weather data
+- Fun facts about each location
+- Distance to next destination
 
-Follow these steps:
+### journey_status table:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Active/inactive state
+- Start and end times
+- Current location reference
+- Total statistics (presents, cookies, distance)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Database Functions:
 
-# Step 3: Install the necessary dependencies.
-npm i
+- An automatic trigger (update_journey_stats_trigger) runs after any insert or update to santa_journey
+- The update_journey_stats() function automatically calculates and updates total statistics in the journey_status table
+- Real-time updates are implemented using Supabase's real-time subscriptions, ensuring the UI updates instantly when the database changes
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Data Flow:
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/c70bf8ee-a187-4c8b-856f-f7c87614c98a) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+- The database is updated with Santa's new location
+- Triggers automatically update journey statistics
+- Real-time subscriptions notify the frontend
+- UI components (map, stats, notification bar) update automatically
+  
+The app is designed to go live on December 24, 2024, at 12:00 AM, when it will begin tracking Santa's journey in real-time.

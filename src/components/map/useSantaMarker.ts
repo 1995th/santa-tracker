@@ -14,7 +14,7 @@ export const useSantaMarker = (
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!map || !santaLocation) return;
+    if (!map || !santaLocation || !map.loaded()) return;
 
     // Validate coordinates
     const [lng, lat] = santaLocation;
@@ -40,9 +40,13 @@ export const useSantaMarker = (
     }
 
     // Update country highlights when map is ready
-    map.once('idle', () => {
+    if (map.isStyleLoaded()) {
       updateCountryHighlights(map, santaLocation, visitedLocations);
-    });
+    } else {
+      map.once('style.load', () => {
+        updateCountryHighlights(map, santaLocation, visitedLocations);
+      });
+    }
 
     // Fly to valid coordinates with different zoom levels for mobile and desktop
     if (isValidCoordinate(santaLocation[0], santaLocation[1])) {

@@ -5,6 +5,7 @@ export const useMapInitialization = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -30,17 +31,18 @@ export const useMapInitialization = () => {
         failIfMajorPerformanceCaveat: false,
       });
 
-      map.current.addControl(
-        new mapboxgl.NavigationControl({
-          visualizePitch: true,
-        }),
-        'top-right'
-      );
-
-      map.current.scrollZoom.disable();
-
-      map.current.on('style.load', () => {
+      map.current.on('load', () => {
         if (!map.current) return;
+        setIsLoaded(true);
+
+        map.current.addControl(
+          new mapboxgl.NavigationControl({
+            visualizePitch: true,
+          }),
+          'top-right'
+        );
+
+        map.current.scrollZoom.disable();
 
         map.current.setFog({
           color: 'rgb(5, 5, 8)',
@@ -81,9 +83,9 @@ export const useMapInitialization = () => {
           },
           filter: ['==', 'iso_3166_1_alpha_3', '']
         });
-      });
 
-      setupGlobeRotation(map.current);
+        setupGlobeRotation(map.current);
+      });
     } catch (err) {
       setError('Failed to initialize the map. Please try refreshing the page.');
       console.error('Map initialization error:', err);
@@ -94,7 +96,7 @@ export const useMapInitialization = () => {
     };
   }, []);
 
-  return { mapContainer, map, error };
+  return { mapContainer, map, error, isLoaded };
 };
 
 function setupGlobeRotation(map: mapboxgl.Map) {

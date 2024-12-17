@@ -23,14 +23,14 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
                   { value: seconds, label: 's' }
                 ].map((item, index) => (
                   <div key={index} className="flex flex-col items-center">
-                    <span className="text-2xl font-bold animate-bounce">{item.value}</span>
+                    <span className="text-2xl font-bold">{item.value}</span>
                     <span className="text-xs">{item.label}</span>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="text-sm sm:text-base animate-pulse">
+            <div className="text-sm sm:text-base">
               {currentLocation ? `Santa is currently in ${currentLocation}!` : 'Preparing for takeoff from the North Pole...'}
             </div>
           )}

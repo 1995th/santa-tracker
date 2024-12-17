@@ -9,7 +9,7 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
   const { days, hours, minutes, seconds, isLive } = useCountdown(new Date('2024-12-24T00:00:00'));
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-santa-red text-white py-3 px-4 z-50 animate-notification-slide">
+    <div className="fixed top-0 left-0 right-0 bg-santa-red text-white py-3 px-4 z-50">
       <div className="container mx-auto">
         <div className="text-center font-medium tracking-wide">
           {!isLive ? (
@@ -30,7 +30,7 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
               </div>
             </div>
           ) : (
-            <div className="text-sm sm:text-base">
+            <div className="text-sm sm:text-base animate-pulse">
               {currentLocation ? `Santa is currently in ${currentLocation}!` : 'Preparing for takeoff from the North Pole...'}
             </div>
           )}

@@ -13,8 +13,12 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       el.className = 'santa-marker';
       el.innerHTML = '🎅';
       el.style.fontSize = '2rem';
+      el.style.cursor = 'default';
 
-      markerRef.current = new mapboxgl.Marker(el)
+      markerRef.current = new mapboxgl.Marker({
+        element: el,
+        anchor: 'center'
+      })
         .setLngLat(santaLocation)
         .addTo(map);
     } else {

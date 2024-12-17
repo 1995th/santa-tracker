@@ -17,9 +17,28 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       const el = document.createElement('div');
       el.className = 'santa-marker';
       el.innerHTML = '🎅';
-      el.style.fontSize = '2rem';
+      el.style.fontSize = '2.5rem';
+      el.style.width = '40px';
+      el.style.height = '40px';
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+      el.style.zIndex = '9999';
+      el.style.cursor = 'pointer';
+      el.style.transition = 'transform 0.3s ease';
+      
+      // Add hover effect
+      el.addEventListener('mouseenter', () => {
+        el.style.transform = 'scale(1.2)';
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'scale(1)';
+      });
 
-      markerRef.current = new mapboxgl.Marker(el)
+      markerRef.current = new mapboxgl.Marker({
+        element: el,
+        anchor: 'center',
+      })
         .setLngLat(santaLocation)
         .addTo(map);
     } else {

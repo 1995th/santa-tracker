@@ -21,7 +21,7 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       
       // Create and set up the image
       const img = document.createElement('img');
-      img.src = 'https://em-content.zobj.net/source/microsoft-teams/363/santa-claus_1f385.png';
+      img.src = '/santa-marker.png'; // Using a local image from public folder
       img.style.width = '60px';
       img.style.height = '60px';
       img.style.objectFit = 'contain';
@@ -47,8 +47,8 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       markerRef.current = new mapboxgl.Marker({
         element: el,
         anchor: 'center',
-        rotationAlignment: 'viewport', // Makes marker always face the camera
-        pitchAlignment: 'viewport',    // Keeps marker upright regardless of map pitch
+        rotationAlignment: 'viewport',
+        pitchAlignment: 'viewport',
       })
         .setLngLat(santaLocation)
         .addTo(map);

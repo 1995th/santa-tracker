@@ -28,7 +28,7 @@ export function ShareButton({ location }: { location?: string }) {
     <Button
       variant="outline"
       size="icon"
-      className="fixed top-20 right-16 bg-background/50 backdrop-blur-sm z-50"
+      className="fixed bottom-16 left-4 bg-background/50 backdrop-blur-sm z-50"
       onClick={handleShare}
     >
       <Share2 className="h-[1.2rem] w-[1.2rem]" />

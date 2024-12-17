@@ -15,13 +15,13 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       // Create and set up the image
       const img = document.createElement('img');
       img.src = 'https://em-content.zobj.net/source/microsoft-teams/363/santa-claus_1f385.png';
-      img.style.width = '40px';
-      img.style.height = '40px';
+      img.style.width = '60px';
+      img.style.height = '60px';
       img.style.objectFit = 'contain';
       
       el.appendChild(img);
-      el.style.width = '40px';
-      el.style.height = '40px';
+      el.style.width = '60px';
+      el.style.height = '60px';
       el.style.display = 'flex';
       el.style.alignItems = 'center';
       el.style.justifyContent = 'center';

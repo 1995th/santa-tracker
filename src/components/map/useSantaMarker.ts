@@ -12,15 +12,17 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       const el = document.createElement('div');
       el.className = 'santa-marker';
       el.innerHTML = '🎅';
-      el.style.fontSize = '3rem'; // Make Santa emoji larger
+      el.style.fontSize = '3rem';
       el.style.cursor = 'default';
-      el.style.filter = 'drop-shadow(2px 2px 2px rgba(0,0,0,0.5))'; // Add shadow for better visibility
-      el.style.zIndex = '1000'; // Ensure Santa stays on top
-      el.style.position = 'relative'; // Help with positioning
+      el.style.filter = 'drop-shadow(2px 2px 2px rgba(0,0,0,0.5))';
+      el.style.zIndex = '1000';
+      el.style.position = 'relative';
 
       markerRef.current = new mapboxgl.Marker({
         element: el,
-        anchor: 'center'
+        anchor: 'center',
+        rotationAlignment: 'map', // Keeps marker oriented with the map
+        pitchAlignment: 'map'     // Keeps marker flat against the map
       })
         .setLngLat(santaLocation)
         .addTo(map);

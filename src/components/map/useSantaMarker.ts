@@ -7,66 +7,32 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
   useEffect(() => {
     if (!map || !santaLocation) return;
 
-    // Create or update Santa marker with tooltip
+    // Create or update Santa marker
     if (!markerRef.current) {
-      const markerElement = document.createElement('div');
-      markerElement.className = 'flex flex-col items-center relative';
-      markerElement.style.transform = 'translate(-50%, -50%)';
-      
-      // Santa emoji
-      const santaEmoji = document.createElement('div');
-      santaEmoji.className = 'santa-marker text-center';
-      santaEmoji.innerHTML = '🎅';
-      santaEmoji.style.fontSize = '2rem';
-      santaEmoji.style.lineHeight = '1';
-      
-      // Location tooltip
-      const tooltip = document.createElement('div');
-      tooltip.className = 'bg-santa-red text-white px-2 py-1 rounded-full text-xs mt-1 whitespace-nowrap';
-      tooltip.innerHTML = 'North Pole';
-      
-      markerElement.appendChild(santaEmoji);
-      markerElement.appendChild(tooltip);
+      const el = document.createElement('div');
+      el.className = 'santa-marker';
+      el.innerHTML = '🎅';
+      el.style.fontSize = '2rem';
 
-      markerRef.current = new mapboxgl.Marker({
-        element: markerElement,
-        anchor: 'center'
-      })
+      markerRef.current = new mapboxgl.Marker(el)
         .setLngLat(santaLocation)
         .addTo(map);
     } else {
       markerRef.current.setLngLat(santaLocation);
-      // Update tooltip text
-      const tooltipElement = markerRef.current.getElement().querySelector('.bg-santa-red');
-      if (tooltipElement) {
-        tooltipElement.innerHTML = 'North Pole';
-      }
     }
 
-    // Highlight area under Santa
+    // Highlight country under Santa
     map.once('idle', () => {
-      // For North Pole specifically
-      if (santaLocation[1] >= 85) {
-        // Set a custom polygon for the North Pole area
-        map.setFilter('country-highlighted', [
-          'all',
-          ['>=', ['get', 'latitude'], 85],
-          ['<=', ['get', 'longitude'], 180],
-          ['>=', ['get', 'longitude'], -180]
-        ]);
+      const point = map.project(santaLocation);
+      const features = map.queryRenderedFeatures(point, {
+        layers: ['country-fills']
+      });
+      
+      if (features.length > 0 && features[0].properties) {
+        const countryCode = features[0].properties.iso_3166_1_alpha_3;
+        map.setFilter('country-highlighted', ['==', 'iso_3166_1_alpha_3', countryCode]);
       } else {
-        // For other locations, use country boundaries
-        const point = map.project(santaLocation);
-        const features = map.queryRenderedFeatures(point, {
-          layers: ['country-fills']
-        });
-        
-        if (features.length > 0 && features[0].properties) {
-          const countryCode = features[0].properties.iso_3166_1_alpha_3;
-          map.setFilter('country-highlighted', ['==', 'iso_3166_1_alpha_3', countryCode]);
-        } else {
-          map.setFilter('country-highlighted', ['==', 'iso_3166_1_alpha_3', '']);
-        }
+        map.setFilter('country-highlighted', ['==', 'iso_3166_1_alpha_3', '']);
       }
     });
 

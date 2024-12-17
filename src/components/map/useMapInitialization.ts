@@ -78,19 +78,6 @@ export const useMapInitialization = () => {
           },
           filter: ['==', 'iso_3166_1_alpha_3', '']
         });
-
-        // Add custom North Pole highlight layer
-        map.current.addLayer({
-          id: 'north-pole-highlight',
-          type: 'fill',
-          source: 'country-boundaries',
-          'source-layer': 'country_boundaries',
-          paint: {
-            'fill-color': '#ea384c',
-            'fill-opacity': 0.5
-          },
-          filter: ['all', ['>=', ['get', 'latitude'], 85]]
-        });
       });
 
       setupGlobeRotation(map.current);

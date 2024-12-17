@@ -53,7 +53,7 @@ export const useSantaMarker = (
     if (isValidCoordinate(santaLocation[0], santaLocation[1])) {
       map.flyTo({
         center: santaLocation,
-        zoom: isMobile ? 1.5 : 3,
+        zoom: isMobile ? 1.5 : 2, // Reduced from 3 to 2 for desktop
         duration: 2000,
       });
     }

@@ -10,13 +10,15 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
     // Create or update Santa marker with tooltip
     if (!markerRef.current) {
       const markerElement = document.createElement('div');
-      markerElement.className = 'flex flex-col items-center';
+      markerElement.className = 'flex flex-col items-center relative';
+      markerElement.style.transform = 'translate(-50%, -50%)';
       
       // Santa emoji
       const santaEmoji = document.createElement('div');
-      santaEmoji.className = 'santa-marker';
+      santaEmoji.className = 'santa-marker text-center';
       santaEmoji.innerHTML = '🎅';
       santaEmoji.style.fontSize = '2rem';
+      santaEmoji.style.lineHeight = '1';
       
       // Location tooltip
       const tooltip = document.createElement('div');
@@ -26,7 +28,10 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       markerElement.appendChild(santaEmoji);
       markerElement.appendChild(tooltip);
 
-      markerRef.current = new mapboxgl.Marker(markerElement)
+      markerRef.current = new mapboxgl.Marker({
+        element: markerElement,
+        anchor: 'center'
+      })
         .setLngLat(santaLocation)
         .addTo(map);
     } else {

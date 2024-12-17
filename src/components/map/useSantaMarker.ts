@@ -7,6 +7,13 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
   useEffect(() => {
     if (!map || !santaLocation) return;
 
+    // Validate coordinates
+    const [lng, lat] = santaLocation;
+    if (!isValidCoordinate(lng, lat)) {
+      console.error('Invalid coordinates:', santaLocation);
+      return;
+    }
+
     // Create or update Santa marker
     if (!markerRef.current) {
       const el = document.createElement('div');
@@ -51,33 +58,57 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
 
     // Highlight current and visited countries
     map.once('idle', () => {
-      // Get current country
-      const point = map.project(santaLocation);
-      const features = map.queryRenderedFeatures(point, {
-        layers: ['country-visited']
-      });
-      
-      const currentCountryCode = features[0]?.properties?.iso_3166_1_alpha_3 || '';
-      
-      // Update visited countries filter
-      const visitedCountryCodes = visitedLocations.map(loc => {
-        const features = map.queryRenderedFeatures(map.project(loc), {
+      try {
+        // Get current country
+        const point = map.project(santaLocation);
+        const features = map.queryRenderedFeatures(point, {
           layers: ['country-visited']
         });
-        return features[0]?.properties?.iso_3166_1_alpha_3 || '';
-      }).filter(Boolean);
+        
+        const currentCountryCode = features[0]?.properties?.iso_3166_1_alpha_3 || '';
+        
+        // Update visited countries filter
+        const visitedCountryCodes = visitedLocations
+          .filter(loc => isValidCoordinate(loc[0], loc[1]))
+          .map(loc => {
+            const features = map.queryRenderedFeatures(map.project(loc), {
+              layers: ['country-visited']
+            });
+            return features[0]?.properties?.iso_3166_1_alpha_3 || '';
+          })
+          .filter(Boolean);
 
-      // Set filters for both layers
-      map.setFilter('country-visited', ['in', 'iso_3166_1_alpha_3', ...visitedCountryCodes]);
-      map.setFilter('country-current', ['==', 'iso_3166_1_alpha_3', currentCountryCode]);
+        // Set filters for both layers
+        map.setFilter('country-visited', ['in', 'iso_3166_1_alpha_3', ...visitedCountryCodes]);
+        map.setFilter('country-current', ['==', 'iso_3166_1_alpha_3', currentCountryCode]);
+      } catch (error) {
+        console.error('Error updating country highlights:', error);
+      }
     });
 
-    map.flyTo({
-      center: santaLocation,
-      zoom: 3,
-      duration: 2000,
-    });
+    // Only fly to valid coordinates
+    if (isValidCoordinate(santaLocation[0], santaLocation[1])) {
+      map.flyTo({
+        center: santaLocation,
+        zoom: 3,
+        duration: 2000,
+      });
+    }
   }, [map, santaLocation, visitedLocations]);
 
   return markerRef;
 };
+
+// Helper function to validate coordinates
+function isValidCoordinate(lng: number, lat: number): boolean {
+  return (
+    typeof lng === 'number' &&
+    typeof lat === 'number' &&
+    !isNaN(lng) &&
+    !isNaN(lat) &&
+    lng >= -180 &&
+    lng <= 180 &&
+    lat >= -90 &&
+    lat <= 90
+  );
+}

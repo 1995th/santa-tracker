@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { isValidCoordinate } from './utils/validateCoordinates';
 import { createMarkerElement } from './utils/createMarkerElement';
 import { updateCountryHighlights } from './utils/updateCountryHighlights';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const useSantaMarker = (
   map: mapboxgl.Map | null,
@@ -10,6 +11,7 @@ export const useSantaMarker = (
   visitedLocations: [number, number][] = []
 ) => {
   const markerRef = useRef<mapboxgl.Marker | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!map || !santaLocation) return;
@@ -42,15 +44,15 @@ export const useSantaMarker = (
       updateCountryHighlights(map, santaLocation, visitedLocations);
     });
 
-    // Fly to valid coordinates
+    // Fly to valid coordinates with different zoom levels for mobile and desktop
     if (isValidCoordinate(santaLocation[0], santaLocation[1])) {
       map.flyTo({
         center: santaLocation,
-        zoom: 3,
+        zoom: isMobile ? 1.5 : 3,
         duration: 2000,
       });
     }
-  }, [map, santaLocation, visitedLocations]);
+  }, [map, santaLocation, visitedLocations, isMobile]);
 
   return markerRef;
 };

@@ -1,11 +1,6 @@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-interface SantaLocation {
-  location: [number, number];
-  visitedCountries: string[];
-}
-
 export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number, number], visitedLocations: [number, number][] = []) => {
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
@@ -16,8 +11,15 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
     if (!markerRef.current) {
       const el = document.createElement('div');
       el.className = 'santa-marker';
-      el.innerHTML = '🎅';
-      el.style.fontSize = '2.5rem';
+      
+      // Create and set up the image
+      const img = document.createElement('img');
+      img.src = 'https://em-content.zobj.net/source/microsoft-teams/363/santa-claus_1f385.png';
+      img.style.width = '40px';
+      img.style.height = '40px';
+      img.style.objectFit = 'contain';
+      
+      el.appendChild(img);
       el.style.width = '40px';
       el.style.height = '40px';
       el.style.display = 'flex';

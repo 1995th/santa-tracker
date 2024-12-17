@@ -21,7 +21,7 @@ function createMarkerElement(): HTMLDivElement {
   el.className = 'santa-marker';
   
   const img = document.createElement('img');
-  img.src = '/santa-marker.png';
+  img.src = 'https://static.tiktokemoji.com/202411/09/wch3Esw3.webp';
   img.style.width = '60px';
   img.style.height = '60px';
   img.style.objectFit = 'contain';

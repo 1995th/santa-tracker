@@ -1,7 +1,12 @@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number, number]) => {
+interface SantaLocation {
+  location: [number, number];
+  visitedCountries: string[];
+}
+
+export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number, number], visitedLocations: [number, number][] = []) => {
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
   useEffect(() => {
@@ -21,19 +26,27 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       markerRef.current.setLngLat(santaLocation);
     }
 
-    // Highlight country under Santa
+    // Highlight current and visited countries
     map.once('idle', () => {
+      // Get current country
       const point = map.project(santaLocation);
       const features = map.queryRenderedFeatures(point, {
-        layers: ['country-fills']
+        layers: ['country-visited']
       });
       
-      if (features.length > 0 && features[0].properties) {
-        const countryCode = features[0].properties.iso_3166_1_alpha_3;
-        map.setFilter('country-highlighted', ['==', 'iso_3166_1_alpha_3', countryCode]);
-      } else {
-        map.setFilter('country-highlighted', ['==', 'iso_3166_1_alpha_3', '']);
-      }
+      const currentCountryCode = features[0]?.properties?.iso_3166_1_alpha_3 || '';
+      
+      // Update visited countries filter
+      const visitedCountryCodes = visitedLocations.map(loc => {
+        const features = map.queryRenderedFeatures(map.project(loc), {
+          layers: ['country-visited']
+        });
+        return features[0]?.properties?.iso_3166_1_alpha_3 || '';
+      }).filter(Boolean);
+
+      // Set filters for both layers
+      map.setFilter('country-visited', ['in', 'iso_3166_1_alpha_3', ...visitedCountryCodes]);
+      map.setFilter('country-current', ['==', 'iso_3166_1_alpha_3', currentCountryCode]);
     });
 
     map.flyTo({
@@ -41,7 +54,7 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       zoom: 3,
       duration: 2000,
     });
-  }, [map, santaLocation]);
+  }, [map, santaLocation, visitedLocations]);
 
   return markerRef;
 };

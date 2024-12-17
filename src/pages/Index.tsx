@@ -45,10 +45,15 @@ const Index = () => {
     ? [currentLocation.longitude, currentLocation.latitude]
     : NORTH_POLE;
 
+  // Get visited locations
+  const visitedLocations: [number, number][] = journeyPoints
+    ?.filter(point => new Date(point.arrival_time) < new Date())
+    ?.map(point => [point.longitude, point.latitude]) || [];
+
   return (
     <main className="relative w-full h-screen overflow-hidden bg-santa-dark">
       <NotificationBar currentLocation={currentLocation?.location_name} />
-      <Map santaLocation={santaLocation} />
+      <Map santaLocation={santaLocation} visitedLocations={visitedLocations} />
     </main>
   );
 };

@@ -25,7 +25,7 @@ export const useMapInitialization = () => {
         style: 'mapbox://styles/mapbox/dark-v11',
         projection: 'globe',
         zoom: 3,
-        center: [-90, 90], // North Pole coordinates
+        center: [-90, 90],
         pitch: 45,
         failIfMajorPerformanceCaveat: false,
       });
@@ -54,21 +54,22 @@ export const useMapInitialization = () => {
           url: 'mapbox://mapbox.country-boundaries-v1'
         });
 
-        // Add a background fill layer
+        // Add visited countries layer
         map.current.addLayer({
-          id: 'country-fills',
+          id: 'country-visited',
           type: 'fill',
           source: 'country-boundaries',
           'source-layer': 'country_boundaries',
           paint: {
-            'fill-color': 'transparent',
-            'fill-opacity': 0.7
-          }
+            'fill-color': '#22c55e',
+            'fill-opacity': 0.5
+          },
+          filter: ['==', 'iso_3166_1_alpha_3', '']
         });
 
-        // Add highlighted country layer
+        // Add current country layer
         map.current.addLayer({
-          id: 'country-highlighted',
+          id: 'country-current',
           type: 'fill',
           source: 'country-boundaries',
           'source-layer': 'country_boundaries',

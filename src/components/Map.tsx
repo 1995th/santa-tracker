@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMapInitialization } from './map/useMapInitialization';
 import { useSantaMarker } from './map/useSantaMarker';
 import MapError from './map/MapError';
+import SnowOverlay from './map/SnowOverlay';
 
 interface MapProps {
   santaLocation?: [number, number];
@@ -19,6 +20,7 @@ const Map: React.FC<MapProps> = ({ santaLocation }) => {
   return (
     <div className="fixed inset-0 w-full h-full">
       <div ref={mapContainer} className="w-full h-full" />
+      <SnowOverlay />
     </div>
   );
 };

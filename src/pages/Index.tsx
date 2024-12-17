@@ -9,16 +9,23 @@ const NORTH_POLE: [number, number] = [-90, 90];
 
 // Simulated Santa route - in production this would come from a backend
 const getSantaLocation = (progress: number): [number, number] => {
-  if (progress <= 0) return NORTH_POLE;
+  // Always return North Pole if progress is 0 or invalid
+  if (progress <= 0 || isNaN(progress)) return NORTH_POLE;
+  if (progress >= 1) return NORTH_POLE; // Return to North Pole when done
   
   // Simple circular route around the globe
   const longitude = -180 + (360 * progress);
-  const latitude = 20 * Math.sin(progress * Math.PI * 2);
+  // Ensure latitude stays within valid range (-90 to 90)
+  const latitude = Math.min(Math.max(-90, 20 * Math.sin(progress * Math.PI * 2)), 90);
+  
+  // Ensure both values are valid numbers
+  if (isNaN(longitude) || isNaN(latitude)) return NORTH_POLE;
+  
   return [longitude, latitude];
 };
 
 const getLocationName = (progress: number): string => {
-  if (progress <= 0) return "North Pole";
+  if (progress <= 0 || isNaN(progress)) return "North Pole";
   
   // This would be replaced with actual location data in production
   const locations = [

@@ -47,7 +47,7 @@ const JourneyStats = () => {
   }, [queryClient]);
 
   return (
-    <div className={`fixed ${isMobile ? 'top-16 right-4 left-4' : 'bottom-8 right-8'} bg-black/50 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-white z-10`}>
+    <div className={`fixed ${isMobile ? 'bottom-32 left-4 right-4' : 'bottom-8 right-8'} bg-black/50 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-white z-10`}>
       <div className="flex flex-col gap-2">
         <HoverCard>
           <HoverCardTrigger>

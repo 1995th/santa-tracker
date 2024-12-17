@@ -12,8 +12,9 @@ export const useSantaMarker = (map: mapboxgl.Map | null, santaLocation?: [number
       const el = document.createElement('div');
       el.className = 'santa-marker';
       el.innerHTML = '🎅';
-      el.style.fontSize = '2rem';
+      el.style.fontSize = '3rem'; // Make Santa emoji larger
       el.style.cursor = 'default';
+      el.style.filter = 'drop-shadow(2px 2px 2px rgba(0,0,0,0.5))'; // Add shadow for better visibility
 
       markerRef.current = new mapboxgl.Marker({
         element: el,

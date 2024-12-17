@@ -24,6 +24,7 @@ const Index = () => {
       return data;
     },
     refetchInterval: 1000,
+    enabled: isLive, // Only fetch when it's live
   });
 
   // Fetch all journey points
@@ -38,17 +39,21 @@ const Index = () => {
       if (error) throw error;
       return data;
     },
+    enabled: isLive, // Only fetch when it's live
   });
 
-  const currentLocation = journeyStatus?.current_location;
+  // Before Dec 24, or if no current location is set, use North Pole
+  const currentLocation = isLive ? journeyStatus?.current_location : null;
   const santaLocation: [number, number] = currentLocation 
     ? [currentLocation.longitude, currentLocation.latitude]
     : NORTH_POLE;
 
-  // Get visited locations
-  const visitedLocations: [number, number][] = journeyPoints
-    ?.filter(point => new Date(point.arrival_time) < new Date())
-    ?.map(point => [point.longitude, point.latitude]) || [];
+  // Only include visited locations if we're live and have journey points
+  const visitedLocations: [number, number][] = isLive && journeyPoints
+    ? journeyPoints
+      .filter(point => new Date(point.arrival_time) < new Date())
+      .map(point => [point.longitude, point.latitude])
+    : [];
 
   return (
     <main className="relative w-full h-screen overflow-hidden bg-santa-dark">

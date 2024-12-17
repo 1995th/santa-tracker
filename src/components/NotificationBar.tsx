@@ -22,9 +22,9 @@ const NotificationBar: React.FC<NotificationBarProps> = ({ currentLocation }) =>
                   { value: minutes, label: 'm' },
                   { value: seconds, label: 's' }
                 ].map((item, index) => (
-                  <div key={index} className="flex flex-col items-center">
+                  <div key={index} className="flex items-center">
                     <span className="text-2xl font-bold">{item.value}</span>
-                    <span className="text-xs">{item.label}</span>
+                    <span className="text-sm ml-1">{item.label}</span>
                   </div>
                 ))}
               </div>
